@@ -1,0 +1,17 @@
+package com.hangzhou.gulimall.ware.dao;
+
+import com.hangzhou.gulimall.ware.entity.WareOrderTaskEntity;
+import com.baomidou.mybatisplus.core.mapper.BaseMapper;
+import org.apache.ibatis.annotations.Mapper;
+
+/**
+ * 库存工作单
+ * 
+ * @author linchenghui
+ * @email linchenghui@gmail.com
+ * @date 2021-02-10 14:29:23
+ */
+@Mapper
+public interface WareOrderTaskDao extends BaseMapper<WareOrderTaskEntity> {
+	
+}
