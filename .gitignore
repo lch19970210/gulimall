@@ -19,3 +19,4 @@ buildNumber.properties
 
 ../.gitignore
 /renren-generator/
+/renren-generator/target/
