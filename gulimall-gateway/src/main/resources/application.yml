@@ -1,0 +1,14 @@
+# 数据源相关信息
+spring:
+  application:
+      name: gulimall-gateway
+  cloud:
+    gateway:
+      routes:
+        - id: baiduRoute
+          uri: https://www.baidu.com
+          predicates:
+            - Query=url, baidu
+
+server:
+  port: 88
