@@ -1,7 +1,11 @@
 package com.hangzhou.gulimall.product.service.impl;
 
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -26,4 +30,37 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         return new PageUtils(page);
     }
 
+    @Override
+    public List<CategoryEntity> listWithTree() {
+        // 查出所有分类
+        List<CategoryEntity> entities = baseMapper.selectList(null);
+        List<CategoryEntity> level1Menus = entities.stream().filter(entity ->
+                entity.getParentCid() == 0
+        ).map(menu -> {
+            menu.setChildren(getChildrens(menu,entities));
+            return menu;
+        }).sorted((menu1,menu2) -> {
+            return (menu1.getSort() == null?0:menu1.getSort()) - (menu2.getSort() == null?0:menu2.getSort());
+        }).collect(Collectors.toList());
+        // 组装成树形结构
+        return entities;
+    }
+
+    /**
+     * 递归查找当前菜单的子菜单
+     * @param root 当前菜单对象
+     * @param allCategory 所有菜单对象
+     * @return 树形结构的菜单对象
+     */
+    private List<CategoryEntity> getChildrens(CategoryEntity root,List<CategoryEntity> allCategory){
+        List<CategoryEntity> childrens = allCategory.stream().filter(entity -> {
+            return entity.getParentCid() == root.getCatId();
+        }).map(menu -> {
+            menu.setChildren(getChildrens(menu, allCategory));
+            return menu;
+        }).sorted((menu1, menu2) -> {
+            return (menu1.getSort() == null?0:menu1.getSort()) - (menu2.getSort() == null?0:menu2.getSort());
+        }).collect(Collectors.toList());
+        return childrens;
+    }
 }
