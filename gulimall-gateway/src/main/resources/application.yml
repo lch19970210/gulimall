@@ -9,6 +9,15 @@ spring:
           uri: https://www.baidu.com
           predicates:
             - Query=url, baidu
+
+        # 和adminRoute网关配置中的断言地址相似所以应该放在前面
+        - id: productRoute
+          uri: lb://gulimall-product
+          predicates:
+            - Path=/api/product/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
         # 前端项目暂时全部路由到 renren-fast
         - id: adminRoute
           uri: lb://renren-fast
