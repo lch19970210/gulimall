@@ -18,6 +18,14 @@ spring:
           filters:
             - RewritePath=/api/(?<segment>/?.*),/$\{segment}
 
+        # 第三方服务网关配置
+        - id: thirdPartyRoute
+          uri: lb://gulimall-third-party
+          predicates:
+            - Path=/api/thirdparty/**
+          filters:
+            - RewritePath=/api/thirdparty/(?<segment>/?.*),/$\{segment}
+
         # 前端项目暂时全部路由到 renren-fast
         - id: adminRoute
           uri: lb://renren-fast
