@@ -1,9 +1,11 @@
 package com.hangzhou.gulimall.product.controller;
 
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -15,6 +17,7 @@ import com.hangzhou.gulimall.product.service.BrandService;
 import com.hangzhou.common.utils.PageUtils;
 import com.hangzhou.common.utils.R;
 
+import javax.validation.Valid;
 
 
 /**
@@ -58,8 +61,18 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody BrandEntity brand){
-		brandService.save(brand);
+    public R save(@Valid @RequestBody BrandEntity brand, BindingResult result){
+        if(result.hasErrors()){
+            HashMap map = new HashMap();
+            result.getFieldErrors().forEach((item) ->{
+                String message = item.getDefaultMessage();
+                String field = item.getField();
+                map.put(field,message);
+            });
+            return R.error(400,"提交的数据不合法").put("data",map);
+        }else {
+            brandService.save(brand);
+        }
 
         return R.ok();
     }
