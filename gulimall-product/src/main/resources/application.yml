@@ -3,7 +3,7 @@ spring:
   datasource:
     username: root
     password: root
-    url: jdbc:mysql://192.168.176.128:3306/gulimall_pms?useUnicode=true&characterEncoding=utf-8
+    url: jdbc:mysql://115.29.212.18:3306/gulimall_pms?useUnicode=true&characterEncoding=utf-8
     driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: gulimall-product
