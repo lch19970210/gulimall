@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,6 +30,7 @@ import javax.validation.Valid;
  */
 @RestController
 @RequestMapping("product/brand")
+@Validated
 public class BrandController {
     @Autowired
     private BrandService brandService;
@@ -61,18 +63,20 @@ public class BrandController {
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@Valid @RequestBody BrandEntity brand, BindingResult result){
-        if(result.hasErrors()){
-            HashMap map = new HashMap();
-            result.getFieldErrors().forEach((item) ->{
-                String message = item.getDefaultMessage();
-                String field = item.getField();
-                map.put(field,message);
-            });
-            return R.error(400,"提交的数据不合法").put("data",map);
-        }else {
-            brandService.save(brand);
-        }
+    public R save(@RequestBody @Valid BrandEntity brand, BindingResult result){
+//        if(result.hasErrors()){
+//            HashMap map = new HashMap();
+//            result.getFieldErrors().forEach((item) ->{
+//                String message = item.getDefaultMessage();
+//                String field = item.getField();
+//                map.put(field,message);
+//            });
+//            return R.error(400,"提交的数据不合法").put("data",map);
+//        }else {
+//
+//        }
+
+        brandService.save(brand);
 
         return R.ok();
     }
