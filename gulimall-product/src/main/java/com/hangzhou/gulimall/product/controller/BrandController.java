@@ -4,6 +4,8 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.hangzhou.common.valid.AddGroup;
+import com.hangzhou.common.valid.UpdateGroup;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
@@ -59,11 +61,12 @@ public class BrandController {
     }
 
     /**
-     * 保存
+     * 保存(分组校验)
      */
     @RequestMapping("/save")
     //@RequiresPermissions("product:brand:save")
-    public R save(@RequestBody @Valid BrandEntity brand, BindingResult result){
+//    public R save(@RequestBody @Valid BrandEntity brand, BindingResult result){
+    public R save(@Validated({AddGroup.class, UpdateGroup.class}) @RequestBody BrandEntity brand, BindingResult result){
 //        if(result.hasErrors()){
 //            HashMap map = new HashMap();
 //            result.getFieldErrors().forEach((item) ->{
@@ -86,7 +89,7 @@ public class BrandController {
      */
     @RequestMapping("/update")
     //@RequiresPermissions("product:brand:update")
-    public R update(@RequestBody BrandEntity brand){
+    public R update(@Validated(UpdateGroup.class) @RequestBody BrandEntity brand){
 		brandService.updateById(brand);
 
         return R.ok();
