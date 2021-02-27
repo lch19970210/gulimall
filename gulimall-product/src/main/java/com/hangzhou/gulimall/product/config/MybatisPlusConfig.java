@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
  * @Author linchenghui
  * @Date 2021/2/26
  */
+// 开启事务
 @EnableTransactionManagement
 @Configuration
 @MapperScan("com.hangzhou.gulimall.product.dao")
