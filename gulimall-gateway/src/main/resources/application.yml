@@ -10,6 +10,13 @@ spring:
           predicates:
             - Query=url, baidu
 
+        - id: gulimall-member
+          uri: lb://gulimall-member
+          predicates:
+            - Path=/api/member/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
         # 和adminRoute网关配置中的断言地址相似所以应该放在前面
         - id: productRoute
           uri: lb://gulimall-product
