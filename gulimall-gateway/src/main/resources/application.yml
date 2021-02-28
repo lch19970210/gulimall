@@ -10,6 +10,13 @@ spring:
           predicates:
             - Query=url, baidu
 
+        - id: gulimall-ware
+          uri: lb://gulimall-ware
+          predicates:
+            - Path=/api/ware/**
+          filters:
+            - RewritePath=/api/(?<segment>/?.*),/$\{segment}
+
         - id: gulimall-member
           uri: lb://gulimall-member
           predicates:
