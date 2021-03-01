@@ -12,8 +12,8 @@ spring:
       discovery:
         server-addr: localhost:8848
     alicloud:
-      access-key: LTAI4G518dGevkoShoyoH5RT
-      secret-key: gqBv7tw5iOvrfsXWmlkb0As9hmCb9W
+      access-key: bwzuS4dcRBUFv0OLtFZ/H1MReyMsFt0rH7necARO69Af2EhKmU3PhPpqYVILM2JxhzTtUZ86ahh2tEisK6QZV6YkdyIiAidqOL/JsRqLYws6GECPtYOJR2nbwkuqLReD6gZIdKuKn3SLICPvpRVDRHFicRTHUUkYPk25afCpfN8=
+      secret-key: DVaWHV0ds5gfH10cO/GFU9idFwxXs2Mcccl7CCXT3lc5j2JDEx0KxdTF7DRPz2xqgcXfeCdnNgl57BGJaAufMgT3ybhube/FfgLPsTd9Fbknzv9xh2HH81FsVR9m5tdu+zjoIH3j0TBC2OB+JO5fxImbqyDHV7rYe4Lm8V0EAi0=
       oss:
         endpoint: oss-cn-hangzhou.aliyuncs.com
   jackson:
