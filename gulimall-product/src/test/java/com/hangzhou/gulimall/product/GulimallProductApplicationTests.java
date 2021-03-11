@@ -6,6 +6,7 @@ import com.aliyun.oss.OSSClientBuilder;
 import com.hangzhou.gulimall.product.entity.BrandEntity;
 import com.hangzhou.gulimall.product.service.BrandService;
 import com.hangzhou.gulimall.product.service.CategoryService;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -18,7 +19,9 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 @Slf4j
 @RunWith(SpringRunner.class)
@@ -72,4 +75,18 @@ class GulimallProductApplicationTests {
         System.out.println("测试成功...");
     }
 
+    @Test
+    void testStream(){
+        List<Student> stu = new ArrayList<>();
+        stu.stream().forEach(item ->{
+            System.out.println("stream"+item.getName());
+        });
+    }
+
+}
+
+@Data
+class Student{
+    private String name;
+    private String age;
 }
