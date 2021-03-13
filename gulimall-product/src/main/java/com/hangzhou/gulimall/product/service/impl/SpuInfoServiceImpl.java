@@ -1,5 +1,6 @@
 package com.hangzhou.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.TypeReference;
 import com.hangzhou.common.constant.ProductConstant;
 import com.hangzhou.common.to.SkuHasStockVo;
 import com.hangzhou.common.to.SkuReductionTo;
@@ -249,8 +250,10 @@ public class SpuInfoServiceImpl extends ServiceImpl<SpuInfoDao, SpuInfoEntity> i
         Map<Long, Boolean> stockMap = null;
         try{
             List<Long> skuIdList = skus.stream().map(SkuInfoEntity::getSkuId).collect(Collectors.toList());
-            R<List<SkuHasStockVo>> skusHasStock = wareFeignService.getSkusHasStock(skuIdList);
-            stockMap = skusHasStock.getData().stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
+            R r = wareFeignService.getSkusHasStock(skuIdList);
+            TypeReference<List<SkuHasStockVo>> typeReference = new TypeReference<List<SkuHasStockVo>>() {
+            };
+            stockMap = r.getData(typeReference).stream().collect(Collectors.toMap(SkuHasStockVo::getSkuId, item -> item.getHasStock()));
         }catch (Exception e){
             log.error("库存服务查询异常:原因{}",e);
         }
