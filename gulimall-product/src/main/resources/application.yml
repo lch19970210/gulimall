@@ -20,6 +20,9 @@ spring:
     date-format: yyyy-MM-dd HH:mm:ss
   thymeleaf:
     cache: false
+  redis:
+    host: 115.29.212.18
+    port: 6379
 
 
 mybatis-plus:

@@ -18,6 +18,11 @@
         <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     </properties>
     <dependencies>
+        <!-- Redis -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-redis</artifactId>
+        </dependency>
         <!-- 引入自动刷新 -->
         <dependency>
             <groupId>org.springframework.boot</groupId>

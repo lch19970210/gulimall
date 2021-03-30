@@ -1,8 +1,12 @@
 package com.hangzhou.gulimall.product.service.impl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.TypeReference;
 import com.hangzhou.gulimall.product.service.CategoryBrandRelationService;
 import com.hangzhou.gulimall.product.vo.Catelog2Vo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -29,6 +33,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     CategoryBrandRelationService categoryBrandRelationService;
+
+    @Autowired
+    StringRedisTemplate redisTemplate;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -92,7 +99,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
     }
 
     @Override
-    public Map<String, Object> getCatalogJson() {
+    public Map<String, List<Catelog2Vo>> getCatalogJson() {
+        // 序列化与反序列化
+        String catalogJSON = redisTemplate.opsForValue().get("catalogJSON");
+        if(StringUtils.isEmpty(catalogJSON)){
+            // 缓存没有命中,查询数据库后将对象转为json放入缓存当中
+            Map<String, List<Catelog2Vo>> catalogJsonFromDb = getCatalogJsonFromDb();
+            redisTemplate.opsForValue().set("catalogJSON", JSON.toJSONString(catalogJsonFromDb));
+            return catalogJsonFromDb;
+        }
+        // 缓存命中再转为指定的对象
+        Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {});
+        return result;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDb() {
 
         // 将原先多次查询数据库该成一次查询数据库
         List<CategoryEntity> categoryEntities = baseMapper.selectList(null);
@@ -101,7 +122,7 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 //        List<CategoryEntity> level1Categorys = this.getLevel1Categorys();
         List<CategoryEntity> level1Categorys = getCategoryByCatId(categoryEntities,0L);
         // 封装数据
-        Map<String, Object> parent_cid = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
+        Map<String, List<Catelog2Vo>> parent_cid = level1Categorys.stream().collect(Collectors.toMap(k -> k.getCatId().toString(), v -> {
             // 查询每个一级分类的二级分类
             List<CategoryEntity> level2Categories = getCategoryByCatId(categoryEntities,v.getCatId());
             // 封装数据
