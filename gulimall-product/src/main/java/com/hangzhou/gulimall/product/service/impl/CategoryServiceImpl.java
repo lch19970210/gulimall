@@ -5,6 +5,7 @@ import com.alibaba.fastjson.TypeReference;
 import com.hangzhou.gulimall.product.service.CategoryBrandRelationService;
 import com.hangzhou.gulimall.product.vo.Catelog2Vo;
 import org.apache.commons.lang.StringUtils;
+import org.redisson.api.RedissonClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.script.DefaultRedisScript;
@@ -35,6 +36,9 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
 
     @Autowired
     StringRedisTemplate redisTemplate;
+
+    @Autowired
+    RedissonClient redisson;
 
     @Override
     public PageUtils queryPage(Map<String, Object> params) {
@@ -112,6 +116,21 @@ public class CategoryServiceImpl extends ServiceImpl<CategoryDao, CategoryEntity
         // 缓存命中再转为指定的对象
         Map<String, List<Catelog2Vo>> result = JSON.parseObject(catalogJSON, new TypeReference<Map<String, List<Catelog2Vo>>>() {});
         return result;
+    }
+
+    public Map<String, List<Catelog2Vo>> getCatalogJsonFromDbWithRedissonLock() {
+
+        System.out.println("获取分布式锁成功...");
+        // 设置过期时间必须和占锁同时执行,否则在占锁后还未加入过期时间之间服务崩溃的话还是会造成死锁问题
+        //redisTemplate.expire("lock",30,TimeUnit.SECONDS);
+        // 加锁成功后执行业务(如果业务中抛异常会导致死锁问题)
+        Map<String, List<Catelog2Vo>> dataFromDb ;
+        try{
+            dataFromDb = getDataFromDb();
+        }finally {
+
+        }
+        return dataFromDb;
     }
 
     public Map<String, List<Catelog2Vo>> getCatalogJsonFromDbWithRedisLock() {
