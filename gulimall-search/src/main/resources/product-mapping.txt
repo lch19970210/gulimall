@@ -17,9 +17,7 @@ PUT product
             "catalogId": { "type": "long"  },
             "brandName": {"type": "keyword"},
             "brandImg":{
-                "type": "keyword",
-                "index": false,
-                "doc_values": false
+                "type": "keyword"
             },
             "catalogName": {"type": "keyword" },
             "attrs": {
@@ -27,9 +25,7 @@ PUT product
                 "properties": {
                     "attrId": {"type": "long"  },
                     "attrName": {
-                        "type": "keyword",
-                        "index": false,
-                        "doc_values": false
+                        "type": "keyword"
                     },
                     "attrValue": {"type": "keyword" }
                 }
