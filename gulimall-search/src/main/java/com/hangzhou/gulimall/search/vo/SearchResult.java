@@ -10,6 +10,7 @@ import java.util.List;
  * @Author linchenghui
  * @Date 2021/4/8
  */
+@Data
 public class SearchResult {
     /**
      * 查询到的所有商品信息

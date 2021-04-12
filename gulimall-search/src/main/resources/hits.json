@@ -1,0 +1,78 @@
+{
+  "_index" : "gulimall_product",
+  "_type" : "_doc",
+  "_id" : "10",
+  "_score" : 1.0,
+  "_source" : {
+    "attrs" : [
+      {
+        "attrId" : 1,
+        "attrName" : "入网参数",
+        "attrValue" : "5G"
+      },
+      {
+        "attrId" : 2,
+        "attrName" : "上市年份",
+        "attrValue" : "2021"
+      },
+      {
+        "attrId" : 3,
+        "attrName" : "颜色",
+        "attrValue" : "流光幻镜"
+      },
+      {
+        "attrId" : 9,
+        "attrName" : "电池容量",
+        "attrValue" : "3500mAh"
+      }
+    ],
+    "brandId" : 6,
+    "brandImg" : "https://gulimall-202102.oss-cn-hangzhou.aliyuncs.com/2021-02-21/ca6c1aa6-5945-40a9-88c7-b3272218c5d6_iphone-12-mini-black-select-2020.png",
+    "brandName" : "苹果",
+    "catalogId" : 225,
+    "catalogName" : "手机",
+    "hasStock" : true,
+    "hotScore" : 0,
+    "saleCount" : 0,
+    "skuId" : 10,
+    "skuImg" : "",
+    "skuPrice" : 688.0,
+    "skuTitle" : "iphone 13 钛空银 4G 套餐一 8GB+128GB 2020",
+    "spuId" : 4
+  },
+  "aggregations" : {
+  "attr_agg" : {
+    "doc_count" : 0
+  },
+  "brand_agg" : {
+    "doc_count_error_upper_bound" : 0,
+    "sum_other_doc_count" : 0,
+    "buckets" : [
+      {
+        "key" : 6,
+        "doc_count" : 4,
+        "brand_img_agg" : {
+          "doc_count_error_upper_bound" : 0,
+          "sum_other_doc_count" : 0,
+          "buckets" : [
+            {
+              "key" : "https://gulimall-202102.oss-cn-hangzhou.aliyuncs.com/2021-02-21/ca6c1aa6-5945-40a9-88c7-b3272218c5d6_iphone-12-mini-black-select-2020.png",
+              "doc_count" : 4
+            }
+          ]
+        },
+        "brand_name_agg" : {
+          "doc_count_error_upper_bound" : 0,
+          "sum_other_doc_count" : 0,
+          "buckets" : [
+            {
+              "key" : "苹果",
+              "doc_count" : 4
+            }
+          ]
+        }
+      }
+    ]
+  }
+  }
+}
