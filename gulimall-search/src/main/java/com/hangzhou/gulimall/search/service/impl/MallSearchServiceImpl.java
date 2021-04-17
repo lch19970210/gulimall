@@ -49,8 +49,8 @@ public class MallSearchServiceImpl implements MallSearchService {
 
     @Override
     public SearchResult search(SearchParam param) {
-        // 动态构建出查询需要的DSL语句
         SearchResult result = null;
+        // 动态构建出查询需要的DSL语句
         // 创建检索请求
         SearchRequest searchRequest = buildSearchRequest(param);
 
@@ -183,7 +183,6 @@ public class MallSearchServiceImpl implements MallSearchService {
         nestedAggregationBuilder.subAggregation(attrIdAgg);
         searchSourceBuilder.aggregation(nestedAggregationBuilder);
 
-        log.debug("构建的DSL语句 {}",searchSourceBuilder.toString());
         System.out.println("构建的DSL语句："+searchSourceBuilder.toString());
 
         SearchRequest searchRequest = new SearchRequest(new String[]{EsConstant.PRODUCT_INDEX}, searchSourceBuilder);
