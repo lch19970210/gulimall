@@ -3,9 +3,12 @@ package com.hangzhou.gulimall.product;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
+import com.hangzhou.gulimall.product.dao.AttrGroupDao;
 import com.hangzhou.gulimall.product.entity.BrandEntity;
 import com.hangzhou.gulimall.product.service.BrandService;
 import com.hangzhou.gulimall.product.service.CategoryService;
+import com.hangzhou.gulimall.product.vo.SkuItemVo;
+import com.hangzhou.gulimall.product.vo.SpuItemAttrGroupVo;
 import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
@@ -40,6 +43,15 @@ class GulimallProductApplicationTests {
 
     @Autowired
     RedissonClient RedissonClient;
+
+    @Autowired
+    AttrGroupDao attrGroupDao;
+
+    @Test
+    public void getAttrGroupWithAttrsBySpuId(){
+        List<SpuItemAttrGroupVo> vos = attrGroupDao.getAttrGroupWithAttrsBySpuId(4L, 225L);
+        System.out.println(vos);
+    }
 
     @Test
     public void Redisson(){
@@ -84,18 +96,5 @@ class GulimallProductApplicationTests {
         System.out.println("测试成功...");
     }
 
-    @Test
-    void testStream(){
-        List<Student> stu = new ArrayList<>();
-        stu.stream().forEach(item ->{
-            System.out.println("stream"+item.getName());
-        });
-    }
 
-}
-
-@Data
-class Student{
-    private String name;
-    private String age;
 }

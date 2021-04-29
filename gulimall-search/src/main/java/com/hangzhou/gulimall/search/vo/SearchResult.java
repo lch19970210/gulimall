@@ -2,6 +2,7 @@ package com.hangzhou.gulimall.search.vo;
 
 import com.hangzhou.common.to.es.SkuEsModel;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +12,7 @@ import java.util.List;
  * @Date 2021/4/8
  */
 @Data
+@Accessors(chain = true)
 public class SearchResult {
     /**
      * 查询到的所有商品信息
@@ -58,6 +60,7 @@ public class SearchResult {
     private List<Long> attrIds = new ArrayList<>();
 
     @Data
+    @Accessors(chain = true)
     public static class NavVo {
         private String name;
         private String navValue;
@@ -65,6 +68,7 @@ public class SearchResult {
     }
 
     @Data
+    @Accessors(chain = true)
     public static class BrandVo {
         private Long brandId;
         private String brandName;
@@ -72,12 +76,14 @@ public class SearchResult {
     }
 
     @Data
+    @Accessors(chain = true)
     public static class CatalogVo {
         private Long catalogId;
         private String catalogName;
     }
 
     @Data
+    @Accessors(chain = true)
     public static class AttrVo {
         private Long attrId;
         private String attrName;

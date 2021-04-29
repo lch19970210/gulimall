@@ -40,6 +40,11 @@ spring:
           filters:
             - RewritePath=/api/thirdparty/(?<segment>/?.*),/$\{segment}
 
+        - id: searchRoute
+          uri: lb://gulimall-search
+          predicates:
+            - Host=search.gulimall.com
+
         # 前端项目暂时全部路由到 renren-fast
         - id: adminRoute
           uri: lb://renren-fast

@@ -239,9 +239,9 @@ public class MallSearchServiceImpl implements MallSearchService {
                 return keyAsString;
             }).collect(Collectors.toList());
 
-            attrVo.setAttrId(attrId);
-            attrVo.setAttrName(attrName);
-            attrVo.setAttrValue(attrValues);
+            attrVo.setAttrId(attrId)
+                    .setAttrName(attrName)
+                    .setAttrValue(attrValues);
 
             attrVos.add(attrVo);
         }
@@ -258,9 +258,9 @@ public class MallSearchServiceImpl implements MallSearchService {
             String brandName = ((ParsedStringTerms) bucket.getAggregations().get("brandNameAgg")).getBuckets().get(0).getKeyAsString();
             // 得到品牌图片
             String brandImg = ((ParsedStringTerms) bucket.getAggregations().get("brandImgAgg")).getBuckets().get(0).getKeyAsString();
-            brandVo.setBrandId(brandId);
-            brandVo.setBrandName(brandName);
-            brandVo.setBrandImg(brandImg);
+            brandVo.setBrandId(brandId)
+                    .setBrandName(brandName)
+                    .setBrandImg(brandImg);
             brandVos.add(brandVo);
         }
         result.setBrands(brandVos);
@@ -292,6 +292,11 @@ public class MallSearchServiceImpl implements MallSearchService {
         // 分页信息-总页码数
         int totalPages = (int) total % EsConstant.PRODUCT_PAGESIZE == 0? (int) total % EsConstant.PRODUCT_PAGESIZE + 1: (int) total % EsConstant.PRODUCT_PAGESIZE;
         result.setTotalPages(totalPages);
+        List<Integer> pageNavs = new ArrayList<>();
+        for (int i = 1; i <= totalPages; i++) {
+            pageNavs.add(i);
+        }
+        result.setPageNavs(pageNavs);
         return result;
     }
 }
