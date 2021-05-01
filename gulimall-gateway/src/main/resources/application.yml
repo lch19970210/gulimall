@@ -45,6 +45,11 @@ spring:
           predicates:
             - Host=search.gulimall.com
 
+        - id: authRoute
+            uri: lb://gulimall-auth-server
+            predicates:
+              - Host=auth.gulimall.com
+
         # 前端项目暂时全部路由到 renren-fast
         - id: adminRoute
           uri: lb://renren-fast
