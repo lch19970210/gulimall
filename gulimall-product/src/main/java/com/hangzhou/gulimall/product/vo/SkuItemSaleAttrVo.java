@@ -18,6 +18,6 @@ public class SkuItemSaleAttrVo {
     /**
      * AttrValueWithSkuIdVo两个属性 attrValue、skuIds
      */
-//        private List<AttrValueWithSkuIdVo> attrValues;
-    private List<String> attrValues;
+        private List<AttrValueWithSkuIdVo> attrValues;
+//    private List<String> attrValues;
 }

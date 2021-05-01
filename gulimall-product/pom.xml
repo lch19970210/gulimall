@@ -18,6 +18,13 @@
         <spring-cloud.version>Hoxton.SR6</spring-cloud.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- 使用redisson作为分布式锁等功能框架 -->
         <dependency>
             <groupId>org.redisson</groupId>
