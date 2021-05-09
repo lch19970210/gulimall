@@ -18,6 +18,13 @@
         <spring-cloud.version>2020.0.1</spring-cloud.version>
     </properties>
     <dependencies>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-configuration-processor</artifactId>
+            <optional>true</optional>
+        </dependency>
+
         <!-- oss -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>

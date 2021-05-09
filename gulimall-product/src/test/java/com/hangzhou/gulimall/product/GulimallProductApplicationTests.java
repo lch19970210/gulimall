@@ -3,6 +3,8 @@ package com.hangzhou.gulimall.product;
 import com.aliyun.oss.OSS;
 import com.aliyun.oss.OSSClient;
 import com.aliyun.oss.OSSClientBuilder;
+import com.hangzhou.gulimall.product.config.MyThreadConfig;
+import com.hangzhou.gulimall.product.config.ThreadPoolConfigProperties;
 import com.hangzhou.gulimall.product.dao.AttrGroupDao;
 import com.hangzhou.gulimall.product.entity.BrandEntity;
 import com.hangzhou.gulimall.product.service.BrandService;
@@ -14,8 +16,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 import org.redisson.api.RedissonClient;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import java.io.ByteArrayInputStream;
@@ -46,6 +51,15 @@ class GulimallProductApplicationTests {
 
     @Autowired
     AttrGroupDao attrGroupDao;
+
+    @Test
+    public void IoCTest(){
+        AnnotationConfigApplicationContext applicationContext = new AnnotationConfigApplicationContext();
+        applicationContext.register(ThreadPoolConfigProperties.class);
+        applicationContext.refresh();
+        ThreadPoolConfigProperties bean = applicationContext.getBean(ThreadPoolConfigProperties.class);
+        System.out.println(bean);
+    }
 
     @Test
     public void getAttrGroupWithAttrsBySpuId(){
