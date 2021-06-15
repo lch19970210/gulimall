@@ -5,16 +5,21 @@ import com.hangzhou.common.exception.BizCodeEnum;
 import com.hangzhou.common.utils.R;
 
 import com.hangzhou.gulimall.auth.feign.ThirdPartyFeignService;
+import com.hangzhou.gulimall.auth.vo.UserRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.validation.Valid;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+import java.util.stream.Collectors;
 
 /**
  * @Author linchenghui
@@ -55,12 +60,34 @@ public class LoginController {
         return R.ok();
     }
 
-    @GetMapping({"/login.html","/login","/"})
+    @PostMapping("/register")
+    public String register(@Valid UserRegistVo vo, BindingResult result, Model model, RedirectAttributes attributes) {
+        Map<String, String> errors = new HashMap<>();
+        if (result.hasErrors()){
+            //1.1 如果校验不通过，则封装校验结果
+            result.getFieldErrors().forEach(item->{
+                // 获取错误的属性名和错误信息
+                errors.put(item.getField(), item.getDefaultMessage());
+                //1.2 将错误信息封装到session中
+                attributes.addFlashAttribute("errors", errors);
+            });
+            //1.2 重定向到注册页
+            return "redirect:http://127.0.0.1:20000/reg.html";
+        }
+
+        // 调用远程服务进行注册
+        // 1.校验验证码
+
+        return "redirect:http://127.0.0.1:20000/login.html";
+
+    }
+
+    @GetMapping({"/login","/"})
     public String loginPage(){
         return "login";
     }
 
-    @GetMapping({"/reg.html","/reg"})
+    @GetMapping({"/reg"})
     public String regPage(){
         return "reg";
     }

@@ -7,6 +7,8 @@ import java.io.Serializable;
 import java.util.Date;
 import lombok.Data;
 
+import javax.annotation.PostConstruct;
+
 /**
  * 商品属性
  * 
