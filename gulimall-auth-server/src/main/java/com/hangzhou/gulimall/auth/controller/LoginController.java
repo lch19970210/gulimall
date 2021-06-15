@@ -6,6 +6,7 @@ import com.hangzhou.common.utils.R;
 
 import com.hangzhou.gulimall.auth.feign.ThirdPartyFeignService;
 import com.hangzhou.gulimall.auth.vo.UserRegistVo;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.stereotype.Controller;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -75,9 +77,17 @@ public class LoginController {
             return "redirect:http://127.0.0.1:20000/reg.html";
         }
 
-        // 调用远程服务进行注册
-        // 1.校验验证码
-
+        // 校验验证码
+        String code = vo.getCode();
+        redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
+        if (!StringUtils.isBlank(code)) {
+            // 删除验证码
+            redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
+            // 调用远程服务进行注册
+        } else {
+            errors.putIfAbsent("code", "短信验证码错误");
+            return "redirect:http://127.0.0.1:20000/reg.html";
+        }
         return "redirect:http://127.0.0.1:20000/login.html";
 
     }
