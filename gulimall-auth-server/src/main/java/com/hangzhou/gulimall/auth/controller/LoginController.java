@@ -1,9 +1,11 @@
 package com.hangzhou.gulimall.auth.controller;
 
+import com.alibaba.fastjson.TypeReference;
 import com.hangzhou.common.constant.AuthServerConstant;
 import com.hangzhou.common.exception.BizCodeEnum;
 import com.hangzhou.common.utils.R;
 
+import com.hangzhou.gulimall.auth.feign.MemberFeignService;
 import com.hangzhou.gulimall.auth.feign.ThirdPartyFeignService;
 import com.hangzhou.gulimall.auth.vo.UserRegistVo;
 import org.apache.commons.lang.StringUtils;
@@ -36,6 +38,9 @@ public class LoginController {
     @Autowired
     StringRedisTemplate redisTemplate;
 
+    @Autowired
+    MemberFeignService memberFeignServicel;
+
     /**
      * 发送请求调用发送短信服务
      * @param phone 手机号
@@ -57,7 +62,8 @@ public class LoginController {
 
         // 发送短信校验
         String code = UUID.randomUUID().toString().substring(0,5);
-        redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone, code, 1, TimeUnit.MINUTES);
+        String substring = code + "_" + System.currentTimeMillis();
+        redisTemplate.opsForValue().set(AuthServerConstant.SMS_CODE_CACHE_PREFIX + phone, substring, 1, TimeUnit.MINUTES);
         thirdPartyFeignService.sendCode(phone, code);
         return R.ok();
     }
@@ -77,18 +83,24 @@ public class LoginController {
             return "redirect:http://127.0.0.1:20000/reg.html";
         }
 
-        // 校验验证码
-        String code = vo.getCode();
-        redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
-        if (!StringUtils.isBlank(code)) {
+        // 校验验证码(没有接入短信发送接口所以判断用户是否点击过发送短信即可)
+        String smsCode = redisTemplate.opsForValue().get(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
+        if (!StringUtils.isBlank(smsCode)) {
             // 删除验证码
             redisTemplate.delete(AuthServerConstant.SMS_CODE_CACHE_PREFIX + vo.getPhone());
             // 调用远程服务进行注册
+            R r = memberFeignServicel.regist(vo);
+            if (r.getCode() == 0) {
+                return "redirect:http://127.0.0.1:20000/login.html";
+            } else {
+                errors.put("msg", "注册失败,请联系管理员");
+                attributes.addFlashAttribute("errors", errors);
+                return "redirect:http://127.0.0.1:20000/reg.html";
+            }
         } else {
             errors.putIfAbsent("code", "短信验证码错误");
             return "redirect:http://127.0.0.1:20000/reg.html";
         }
-        return "redirect:http://127.0.0.1:20000/login.html";
 
     }
 

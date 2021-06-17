@@ -13,6 +13,7 @@ package com.hangzhou.common.exception;
  *  12: 订单
  *  13: 购物车
  *  14: 物流
+ *  15: 用户
  */
 public enum BizCodeEnum {
     UNKONW_EXCEPTION(10000,"系统未知异常"),
@@ -20,7 +21,10 @@ public enum BizCodeEnum {
 
     PRODUCT_UP_EXCEPTION(11000,"商品上架异常"),
 
-    SMS_CODE_EXCEPTION(10002, "短信验证码获取评率太高");
+    SMS_CODE_EXCEPTION(10002, "短信验证码获取评率太高"),
+
+    USER_EXIST_EXCEPTION(15001, "用户名存在"),
+    PHONE_EXIST_EXCEPTION(15002, "用户手机号存在");
 
     private int code;
     private String msg;

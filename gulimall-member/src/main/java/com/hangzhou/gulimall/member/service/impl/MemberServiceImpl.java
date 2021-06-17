@@ -5,6 +5,7 @@ import com.hangzhou.gulimall.member.exception.PhoneExistException;
 import com.hangzhou.gulimall.member.exception.UsernameExistException;
 import com.hangzhou.gulimall.member.vo.MemberRegistVo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import java.util.Map;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
@@ -46,7 +47,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         checkUsernameUnique(vo.getUserName());
         entity.setMobile(vo.getPhone());
         entity.setUsername(vo.getUserName());
-        entity.setPassword(vo.getPassword());
+        // 密码进行加密处理
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        // 虽然每次加盐处理得出的值不一致但是用 passwordEncoder.matches() 方法还是可以进行比较的
+        String encode = passwordEncoder.encode(vo.getPassword());
+        entity.setPassword(encode);
+        // 其他默认值设置
 
     }
 

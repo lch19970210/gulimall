@@ -16,7 +16,7 @@ public class UserRegistVo {
      * 用户名
      */
     @NotEmpty(message = "用户名必须提交")
-    @Length(min = 6, max = 18, message = "用户名必须6-18位字符")
+    @Length(min = 4, max = 18, message = "用户名必须4-18位字符")
     private String userName;
 
     /**
