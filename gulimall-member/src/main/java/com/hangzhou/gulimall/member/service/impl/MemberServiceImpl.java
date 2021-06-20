@@ -52,8 +52,8 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
         // 虽然每次加盐处理得出的值不一致但是用 passwordEncoder.matches() 方法还是可以进行比较的
         String encode = passwordEncoder.encode(vo.getPassword());
         entity.setPassword(encode);
-        // 其他默认值设置
-
+        // todo 其他默认值设置
+        memberDao.insert(entity);
     }
 
     @Override
