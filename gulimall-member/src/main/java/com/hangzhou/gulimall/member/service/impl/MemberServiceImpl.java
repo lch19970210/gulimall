@@ -3,7 +3,9 @@ package com.hangzhou.gulimall.member.service.impl;
 import com.hangzhou.gulimall.member.dao.MemberLevelDao;
 import com.hangzhou.gulimall.member.exception.PhoneExistException;
 import com.hangzhou.gulimall.member.exception.UsernameExistException;
+import com.hangzhou.gulimall.member.vo.MemberLoggingVo;
 import com.hangzhou.gulimall.member.vo.MemberRegistVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,7 +23,6 @@ import com.hangzhou.gulimall.member.service.MemberService;
 
 @Service("memberService")
 public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> implements MemberService {
-
     @Autowired
     MemberLevelDao memberLevelDao;
 
@@ -57,6 +58,27 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
     @Override
+    public MemberEntity login(MemberLoggingVo vo) {
+        String userName = vo.getLoginacct();
+        String password = vo.getPassword();
+        MemberDao memberDao = this.baseMapper;
+        MemberEntity entity = memberDao.selectOne(new QueryWrapper<MemberEntity>().eq("username", userName)
+                .or().eq("password", password));
+        if (ObjectUtils.isEmpty(entity)) {
+            return null;
+        } else {
+            String passwordFromDB = entity.getPassword();
+            BCryptPasswordEncoder encoder = new BCryptPasswordEncoder();
+            boolean matches = encoder.matches(password, passwordFromDB);
+            if (matches) {
+                return entity;
+            } else {
+                return null;
+            }
+        }
+    }
+
+    @Override
     public void checkMobileUnique(String mobile) {
         Integer integer = this.baseMapper.selectCount(new QueryWrapper<MemberEntity>().eq("mobile", mobile));
         if (integer > 0) {
@@ -73,3 +95,4 @@ public class MemberServiceImpl extends ServiceImpl<MemberDao, MemberEntity> impl
     }
 
 }
+

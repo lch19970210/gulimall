@@ -7,7 +7,9 @@ import com.hangzhou.common.exception.BizCodeEnum;
 import com.hangzhou.gulimall.member.exception.PhoneExistException;
 import com.hangzhou.gulimall.member.exception.UsernameExistException;
 import com.hangzhou.gulimall.member.feign.CouponFeignService;
+import com.hangzhou.gulimall.member.vo.MemberLoggingVo;
 import com.hangzhou.gulimall.member.vo.MemberRegistVo;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -42,6 +44,16 @@ public class MemberController {
 
         //打印会员和优惠券信息
         return R.ok().put("member",memberEntity).put("coupons",membercoupons.get("coupons"));
+    }
+
+    @PostMapping("/login")
+    public R login(@RequestBody MemberLoggingVo vo) {
+        MemberEntity entity = memberService.login(vo);
+        if (ObjectUtils.isNotEmpty(entity)) {
+            return R.ok();
+        } else {
+            return R.error(BizCodeEnum.LOGGING_EXCEPTION.getCode(), BizCodeEnum.LOGGING_EXCEPTION.getMsg());
+        }
     }
 
     @PostMapping("/regist")

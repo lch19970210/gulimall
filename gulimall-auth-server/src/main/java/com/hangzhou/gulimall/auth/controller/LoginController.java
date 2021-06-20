@@ -7,6 +7,7 @@ import com.hangzhou.common.utils.R;
 
 import com.hangzhou.gulimall.auth.feign.MemberFeignService;
 import com.hangzhou.gulimall.auth.feign.ThirdPartyFeignService;
+import com.hangzhou.gulimall.auth.vo.UserLoggingVo;
 import com.hangzhou.gulimall.auth.vo.UserRegistVo;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -102,6 +103,19 @@ public class LoginController {
             return "redirect:http://127.0.0.1:20000/reg.html";
         }
 
+    }
+
+    /**
+     * 在 login.html 页面登陆成功后重定向到商城页面
+     */
+    @PostMapping("/login")
+    public String login(UserLoggingVo vo) {
+        R login = memberFeignServicel.login(vo);
+        if (login.getCode() == 0) {
+            return "redirect:http://127.0.0.1:10000";
+        } else {
+            return "redirect:http://127.0.0.1:20000/login.html";
+        }
     }
 
     @GetMapping({"/login","/"})

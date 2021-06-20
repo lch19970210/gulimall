@@ -24,7 +24,8 @@ public enum BizCodeEnum {
     SMS_CODE_EXCEPTION(10002, "短信验证码获取评率太高"),
 
     USER_EXIST_EXCEPTION(15001, "用户名存在"),
-    PHONE_EXIST_EXCEPTION(15002, "用户手机号存在");
+    PHONE_EXIST_EXCEPTION(15002, "用户手机号存在"),
+    LOGGING_EXCEPTION(15003,"账号密码错误");
 
     private int code;
     private String msg;
